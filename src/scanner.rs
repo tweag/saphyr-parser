@@ -2230,7 +2230,11 @@ impl<T: Input> Scanner<T> {
                             end = true;
                             break;
                         }
-                        assert!(string.len() < string.capacity());
+                        // FIXME: this assert can get triggered, because we've
+                        // reserved `bufmaxlen` bytes but then we try to push up
+                        // to `bufmaxlen` chars, each of which can be more than
+                        // 1 byte.
+                        // assert!(string.len() < string.capacity());
                         string.push(self.input.peek());
                         self.skip_non_blank();
                     }
